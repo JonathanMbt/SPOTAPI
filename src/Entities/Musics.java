@@ -1,10 +1,16 @@
 package Entities;
 
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Id;
+
+
 
 
 @Entity @Table(name ="musics")
@@ -17,6 +23,14 @@ public class Musics {
 	@ManyToOne
 	@JoinColumn(name="artist_name")
 	private Artists artist_name;
+	
+	@ManyToMany
+	@JoinTable(name="content",joinColumns=@JoinColumn(name="music_id"),inverseJoinColumns=@JoinColumn(name="playlist_id"))
+	Set<Playlist> playlist;
+	
+	@ManyToMany
+	@JoinTable(name="likes",joinColumns=@JoinColumn(name="music_id"),inverseJoinColumns=@JoinColumn(name="username"))
+	Set<Users> user;
 	
 	public Musics() {
 		super();
