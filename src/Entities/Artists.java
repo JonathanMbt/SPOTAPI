@@ -19,7 +19,7 @@ public class Artists implements Serializable{
 	private String label;
 	private String description;
 	
-	@OneToMany(mappedBy="artist_name",targetEntity=Musics.class)
+	@OneToMany(mappedBy="artist_name", targetEntity=Musics.class)
 	List<Musics> music;
 	
 	public Artists() {

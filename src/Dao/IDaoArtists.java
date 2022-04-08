@@ -10,5 +10,4 @@ public interface IDaoArtists {
 	public Artists getByName(String name);
 	public List<Artists> getByLabel(String label);
 	
-	
 }

@@ -25,37 +25,26 @@ public class DaoArtists implements IDaoArtists{
 	
 	public List<Artists> getAll(){
 		
-		Query q = em.createQuery("From Artists",Artists.class);
+		Query q = em.createQuery("From Artists", Artists.class);
 		return q.getResultList();
 		
 	}
 	
 	public Artists getByName(String name){
 		
-		Query q = em.createQuery("From Artists",Artists.class);
+		Query q = em.createQuery("From Artists WHERE name LIKE :n", Artists.class);
+		q.setParameter("n", "%"+name+"%");
 		List<Artists> artists=q.getResultList();
-		Artists result=null;
 		
-		for(Artists a: artists){
-			if(a.getName()==name){
-				result=a;
-			}
-		}
-		return result;
+		return artists.get(0);
 		
 	}
 	public List<Artists> getByLabel(String label){
 		
-		Query q = em.createQuery("From Artists",Artists.class);
-		List<Artists> artists=q.getResultList();
-		ArrayList<Artists> result=new ArrayList<>();
+		Query q = em.createQuery("From Artists WHERE label=:l",Artists.class);
+		q.setParameter("l", label);
 		
-		for(Artists a: artists){
-			if(a.getLabel()==label){
-				result.add(a);
-			}
-		}
-		return result;
+		return q.getResultList();
 	}
 	
 }

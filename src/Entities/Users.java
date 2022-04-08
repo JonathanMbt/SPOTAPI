@@ -18,7 +18,7 @@ public class Users {
 	private String mail;
 	private String password;
 	
-	@ManyToMany(mappedBy="user",targetEntity=Musics.class)
+	@ManyToMany(mappedBy="users",targetEntity=Musics.class)
 	Set<Musics> musics;
 	
 	public Users(){

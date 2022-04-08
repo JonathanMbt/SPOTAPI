@@ -1,5 +1,6 @@
 package Entities;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -18,7 +19,7 @@ public class Playlist {
 	
 	
 	@ManyToMany(mappedBy="playlist",targetEntity=Musics.class)
-	Set<Musics> musics;
+	List<Musics> musics;
 	
 	
 	public Playlist(){
@@ -43,5 +44,15 @@ public class Playlist {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+	public List<Musics> getMusics() {
+		return musics;
+	}
+
+	public void setMusics(List<Musics> musics) {
+		this.musics = musics;
+	}
+	
+	
 	
 }

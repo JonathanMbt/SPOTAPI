@@ -7,6 +7,11 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
+import Dao.DaoArtists;
+import Dao.DaoMusic;
+import Dao.DaoPlaylist;
+import Dao.DaoUsers;
+
 
 
 public class JPAMAIN {
@@ -16,6 +21,7 @@ public class JPAMAIN {
 		emf = Persistence.createEntityManagerFactory("UniteSpoty");
 		EntityManager entityManager = emf.createEntityManager();
 		Query q = entityManager.createQuery("from Artists" , Artists.class);
+		
 		
 		List<Artists> artists ;
 		artists = q.getResultList();
@@ -40,6 +46,23 @@ public class JPAMAIN {
 		
 		// à tester dans les 2 sens + likes
 		
+		DaoArtists daoA = new DaoArtists();
+		Artists a = daoA.getByName("tin");
+		System.out.println(a.getName());
+		
+		DaoMusic dao = new DaoMusic();
+		for(Musics m : dao.getMusicByArtist(a))
+		{
+			System.out.println(m.getTitle());
+		}
+		
+		DaoPlaylist daoP = new DaoPlaylist();
+		
+		for(Musics m : daoP.getMusics(1))
+		{
+			System.out.println(m.getTitle());
+		}
+	
 	}
 
 }
