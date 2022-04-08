@@ -67,6 +67,22 @@ public class Musics {
 	public void setArtist_name(Artists artist_name) {
 		this.artist_name = artist_name;
 	}
+
+	public Set<Playlist> getPlaylist() {
+		return playlist;
+	}
+
+	public void setPlaylist(Set<Playlist> playlist) {
+		this.playlist = playlist;
+	}
+
+	public Set<Users> getUser() {
+		return user;
+	}
+
+	public void setUser(Set<Users> user) {
+		this.user = user;
+	}
 	
 	
 }

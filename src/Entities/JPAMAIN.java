@@ -32,7 +32,13 @@ public class jpaMain {
 		for (Musics m : musics) {
 			System.out.println(m.getTitle());
 			System.out.println(m.getArtist_name().getLabel());
+			for(Playlist p : m.getPlaylist())
+			{
+				System.out.println(p.getName());
+			}
 		}
+		
+		// à tester dans les 2 sens + likes
 		
 	}
 
