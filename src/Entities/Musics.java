@@ -30,7 +30,7 @@ public class Musics {
 	
 	@ManyToMany
 	@JoinTable(name="likes",joinColumns=@JoinColumn(name="music_id"),inverseJoinColumns=@JoinColumn(name="username"))
-	Set<Users> user;
+	Set<Users> users;
 	
 	public Musics() {
 		super();
@@ -75,14 +75,15 @@ public class Musics {
 	public void setPlaylist(Set<Playlist> playlist) {
 		this.playlist = playlist;
 	}
-
-	public Set<Users> getUser() {
-		return user;
+	
+	public Set<Users> getUser(){
+		return users;
 	}
-
-	public void setUser(Set<Users> user) {
-		this.user = user;
+	
+	public void setUser(Set<Users> user){
+		this.users=user;
 	}
+	
 	
 	
 }

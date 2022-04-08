@@ -9,7 +9,7 @@ import javax.persistence.Query;
 
 
 
-public class jpaMain {
+public class JPAMAIN {
 
 	public static void main(String[] args) {
 		EntityManagerFactory emf ;

@@ -1,5 +1,6 @@
 package Entities;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -8,7 +9,11 @@ import javax.persistence.Table;
 import javax.persistence.Id;
 
 @Entity @Table(name="artists")
-public class Artists {
+public class Artists implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	private String name;
 	private String label;
