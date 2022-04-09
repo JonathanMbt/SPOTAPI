@@ -9,29 +9,45 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import dao.Dao;
+import dao.DaoMysql;
+import dao.IDao;
 import entities.Artists;
 import entities.Musics;
+import entities.Users;
 
-public class Tests_DAO_Musics {
+public class Tests_DAO_Musics 
+{
 
-	private Dao dao;
+	private IDao dao;
 	
 	private Artists artistA;
 	private Artists artistB;
 	private Musics musicA;
+	private Users userA;
 
 	@Before
 	public void setUp() throws Exception 
 	{
-		dao = new Dao();
+		dao = new DaoMysql();
+		
 		artistA = new Artists("NF", "Capitol Records", "Description1");
 		artistB = new Artists("Bastille", "EMI", "Description2");
 		
-		musicA = new Musics("The Search", "Rap", artistA); // as cascade type persist is on we don't need to persist artist first, it will be done automatically
+		dao.getDaoArtists().create(artistA);
+		dao.getDaoArtists().create(artistB);
+		
+		musicA = new Musics("The Search", "Rap", artistA); 
 		Musics musicB = new Musics("Time", "Rap", artistA); 
 		Musics musicC = new Musics("Just Like You", "Rap", artistA);
-		Musics musicD = new Musics("Pompeii", "Pop", artistB); 
+		Musics musicD = new Musics("Pompeii", "Pop", artistB);
+		
+		userA = new Users("Niels", "npetersen@gmail.com", "test");
+		Users userB = new Users("Jonathan", "mbtjonathan@gmail.com", "test");
+		
+		dao.getDaoUsers().create(userA);
+		dao.getDaoUsers().create(userB);
+		
+		musicA.addUsersLikes(Arrays.asList(userA, userB));
 		
 		dao.getDaoMusics().create(musicA);
 		dao.getDaoMusics().create(musicB);
@@ -45,6 +61,9 @@ public class Tests_DAO_Musics {
 		// musics will be also deleted as on delete is set to cascade in db
 		dao.getDaoArtists().delete("NF"); 
 		dao.getDaoArtists().delete("Bastille");
+		
+		dao.getDaoUsers().delete("Niels");
+		dao.getDaoUsers().delete("Jonathan");
 	}
 
 	@Test
@@ -82,7 +101,7 @@ public class Tests_DAO_Musics {
 	@Test
 	public void testGetByArtist()
 	{
-		List<Musics> musics = dao.getDaoMusics().getByArtist("NF");
+		List<Musics> musics = dao.getDaoMusics().getByArtist(artistA);
 		
 		assertEquals(3, musics.size()); 
 		
@@ -96,6 +115,8 @@ public class Tests_DAO_Musics {
 	public void testGetById()
 	{
 		Artists ar = new Artists("Test", "Test", "Test");
+		dao.getDaoArtists().create(ar);
+		
 		Musics m = new Musics("TestM", "TestM", ar);
 		dao.getDaoMusics().create(m);
 
@@ -132,9 +153,6 @@ public class Tests_DAO_Musics {
 		
 		assertEquals(2, musicsRap.size());
 		assertEquals(2, musicsPop.size());
-		
-		musicA.setGenre("Rap");
-		dao.getDaoMusics().update(musicA);
 	}
 	
 	
@@ -142,15 +160,38 @@ public class Tests_DAO_Musics {
 	public void testDelete()
 	{
 		Artists ar = new Artists("Test", "Test", "Test");
+		dao.getDaoArtists().create(ar);
+		
 		Musics m = new Musics("TestM", "TestM", ar);
 		dao.getDaoMusics().create(m);
 		
-		dao.getDaoMusics().delete(m.getId());
+		boolean r = dao.getDaoMusics().delete(m.getId());
 		
 		List<Musics> musics = dao.getDaoMusics().getByGenre("TestM");
 		assertEquals(0, musics.size());
+		assertEquals(true, r);
+		
+		boolean r2 = dao.getDaoMusics().delete(m.getId());
+		assertEquals(false, r2);
 		
 		dao.getDaoArtists().delete("Test");
+	}
+	
+	@Test
+	public void testGetNumberOfLikes()
+	{
+		int rs = dao.getDaoMusics().getNumberOfLikes(musicA.getId());
+		assertEquals(2, rs);
+		
+		int rs2 = dao.getDaoMusics().getNumberOfLikes(-5);
+		assertEquals(-1, rs2);
+	}
+	
+	@Test
+	public void testGetLikedByUser()
+	{
+		List<Musics> rs = dao.getDaoMusics().getLikedByUser(userA);
+		assertEquals(1, rs.size());
 	}
 
 }

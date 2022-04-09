@@ -11,9 +11,7 @@ import javax.persistence.Id;
 @Entity @Table(name="artists")
 public class Artists implements Serializable
 {
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -33,35 +31,43 @@ public class Artists implements Serializable
 		this.description = description;
 	}
 	
-	public String getName() {
+	public String getName() 
+	{
 		return name;
 	}
 
-	public void setName(String name) {
+	public void setName(String name) 
+	{
 		this.name = name;
 	}
 
-	public String getLabel() {
+	public String getLabel() 
+	{
 		return label;
 	}
 
-	public void setLabel(String label) {
+	public void setLabel(String label) 
+	{
 		this.label = label;
 	}
 
-	public String getDescription() {
+	public String getDescription() 
+	{
 		return description;
 	}
 
-	public void setDescription(String description) {
+	public void setDescription(String description) 
+	{
 		this.description = description;
 	}
 
-	public Set<Musics> getMusic() {
+	public Set<Musics> getMusic() 
+	{
 		return music;
 	}
 
-	public void setMusic(Set<Musics> music) {
+	public void setMusic(Set<Musics> music) 
+	{
 		this.music = music;
 	}
 

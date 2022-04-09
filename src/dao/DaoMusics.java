@@ -1,25 +1,24 @@
 package dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.persistence.Query;
 
 import entities.Artists;
 import entities.Musics;
+import entities.Users;
 
 public class DaoMusics implements IDaoMusics
 {
 	
 	private EntityManager em;
 	
-	public DaoMusics()
+	public DaoMusics(EntityManagerFactory emf)
 	{
-		EntityManagerFactory emf;
-		emf = Persistence.createEntityManagerFactory("UniteSpoty");
-		em = emf.createEntityManager();
+		this.em = emf.createEntityManager();
 	}
 	
 	@Override
@@ -34,21 +33,25 @@ public class DaoMusics implements IDaoMusics
 	@Override
 	public int getNumberOfLikes(int musicId)
 	{
-		Query q = em.createQuery("From Musics WHERE id=:id", Musics.class);
-		q.setParameter("id", musicId);
-		Musics music = (Musics) q.getResultList().get(0);
+		Musics music = getById(musicId);
 		
+		if (music != null)
+		{
+			return music.getUsersLikes().size();			
+		}
 		
-		return music.getUsersLikes().size();
+		return -1;
 	}
 	
 	@Override
-	public List<Musics> getByArtist(String artistName)
+	public List<Musics> getByArtist(Artists artist)
 	{
-		Query q = em.createQuery("Select m From Musics m INNER JOIN Artists a ON m.artist = a.name WHERE a.name=:artistn", Musics.class);
-		q.setParameter("artistn", artistName);
+		artist = em.find(Artists.class, artist.getName()); //to refresh the instance of artist and be sure to have all musics.
 		
-		return q.getResultList();
+		List<Musics> result = new ArrayList<Musics>();
+		result.addAll(artist.getMusic());
+		
+		return result;
 	}
 
 	@Override
@@ -81,19 +84,45 @@ public class DaoMusics implements IDaoMusics
 	}
 
 	@Override
-	public void delete(int musicId)
+	public boolean delete(int musicId)
 	{
-		em.getTransaction().begin();
-		em.remove(getById(musicId));
-		em.getTransaction().commit();
+		Musics rs = getById(musicId);
+		
+		if(rs != null)
+		{
+			em.getTransaction().begin();
+			em.remove(rs);
+			em.getTransaction().commit();
+		}
+		
+		return rs != null;
 	}
 
 	@Override
 	public Musics getById(int musicId) 
 	{
-		Query q = em.createQuery("From Musics WHERE id=:id", Musics.class);
-		q.setParameter("id", musicId);
+		try 
+		{
+			Query q = em.createQuery("From Musics WHERE id=:id", Musics.class);
+			q.setParameter("id", musicId);
+			Musics rs = (Musics) q.getResultList().get(0);
+			
+			return rs;
+		}catch (IndexOutOfBoundsException e) 
+		{
+			return null;
+		}
+
+	}
+
+	@Override
+	public List<Musics> getLikedByUser(Users user) 
+	{
+		user = em.find(Users.class, user.getUsername());
 		
-		return (Musics) q.getResultList().get(0);
+		List<Musics> result = new ArrayList<Musics>();
+		result.addAll(user.getLikedMusics());
+		
+		return result;
 	}
 }

@@ -11,7 +11,6 @@ public interface IDaoArtists
 	public List<Artists> getByLabel(String label);
 	
 	public Artists create(Artists artist);
-	public Artists updateLabel(String name, String label);
-	public Artists updateDescription(String name, String description);
-	public void delete(String name);
+	public Artists update(Artists artist);
+	public boolean delete(String name);
 }

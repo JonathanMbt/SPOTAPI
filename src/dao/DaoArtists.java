@@ -1,11 +1,9 @@
 package dao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.persistence.Query;
 
 import entities.Artists;
@@ -17,11 +15,9 @@ public class DaoArtists implements IDaoArtists
 	
 	private EntityManager em;
 	
-	public DaoArtists()
+	public DaoArtists(EntityManagerFactory emf)
 	{
-		EntityManagerFactory emf;
-		emf = Persistence.createEntityManagerFactory("UniteSpoty");
-		em = emf.createEntityManager();
+		this.em = emf.createEntityManager();
 	}
 	
 	@Override
@@ -44,7 +40,7 @@ public class DaoArtists implements IDaoArtists
 	@Override
 	public List<Artists> getByLabel(String label)
 	{
-		Query q = em.createQuery("From Artists WHERE label=:l",Artists.class);
+		Query q = em.createQuery("From Artists WHERE label=:l", Artists.class);
 		q.setParameter("l", label);
 		
 		return q.getResultList();
@@ -61,35 +57,28 @@ public class DaoArtists implements IDaoArtists
 	}
 
 	@Override
-	public void delete(String name) 
+	public boolean delete(String name) 
 	{
-		em.getTransaction().begin();
-		em.remove(getByName(name).get(0)); // as it's the exact name and the name is unique we only have one value at index 0.
-		em.getTransaction().commit();
+		List<Artists> rs = getByName(name);
+		
+		if(rs.size() == 1)
+		{
+			em.getTransaction().begin();
+			em.remove(rs.get(0)); // as it's the exact name and the name is unique we only have one value at index 0.
+			em.getTransaction().commit();
+			return true;
+		}
+
+		return false;
 	}
 
 	@Override
-	public Artists updateLabel(String name, String label) 
+	public Artists update(Artists artist) 
 	{
-		Artists artist = getByName(name).get(0);
-		
 		em.getTransaction().begin();
-		artist.setLabel(label); // Once an entity object is retrieved from the database (no matter which way) it can simply be modified in memory from inside an active transaction
+		em.merge(artist);
 		em.getTransaction().commit();
 		
 		return artist;
 	}
-
-	@Override
-	public Artists updateDescription(String name, String description) 
-	{
-		Artists artist = getByName(name).get(0);
-		
-		em.getTransaction().begin();
-		artist.setDescription(description);
-		em.getTransaction().commit();
-		
-		return artist;
-	}
-	
 }

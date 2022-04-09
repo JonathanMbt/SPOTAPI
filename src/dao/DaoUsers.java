@@ -1,34 +1,86 @@
 package dao;
 
-import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.persistence.Query;
 
-import entities.Artists;
 import entities.Users;
 
-public class DaoUsers implements IDaoUsers {
+public class DaoUsers implements IDaoUsers 
+{
 	
 	private EntityManager em;
 	
-	public DaoUsers(){
-		
-		EntityManagerFactory emf;
-		emf = Persistence.createEntityManagerFactory("UniteSpoty");
-		em = emf.createEntityManager();
+	public DaoUsers(EntityManagerFactory emf)
+	{
+		this.em = emf.createEntityManager();
 	}
 
 	@Override
-	public Users getUserByUsername(String username) {
-		Query q = em.createQuery("FROM Users WHERE username=:username", Users.class);
-		q.setParameter("username", username);
-	
-		List<Users> user = q.getResultList();
+	public Users getUserByUsername(String username) 
+	{
+		try 
+		{
+			Query q = em.createQuery("FROM Users WHERE username=:username", Users.class);
+			q.setParameter("username", username);
 		
-		return user.get(0);
+			Users user = (Users) q.getResultList().get(0);
+			
+			return user;
+		}catch (Exception e) 
+		{
+			return null;
+		}
+
+	}
+
+	@Override
+	public Users create(Users user) 
+	{
+		em.getTransaction().begin();
+		em.persist(user);
+		em.getTransaction().commit();
+		
+		return user;
+	}
+
+	@Override
+	public Users update(Users user) 
+	{
+		em.getTransaction().begin();
+		em.merge(user);
+		em.getTransaction().commit();
+		
+		return user;
+	}
+
+	@Override
+	public boolean delete(String username) 
+	{
+		Users u = getUserByUsername(username);
+		
+		if(u != null)
+		{
+			em.getTransaction().begin();
+			em.remove(u);
+			em.getTransaction().commit();
+		}
+			
+		return u != null;
+	}
+
+	@Override
+	public boolean isPasswordCorrect(String username, String inputPassword) 
+	{
+		Users user = getUserByUsername(username);
+		
+		if(user != null)
+		{
+			return user.getPassword() == inputPassword;			
+		}
+		
+		return false;	
 	}
 
 }

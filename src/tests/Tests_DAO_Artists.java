@@ -9,38 +9,42 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import dao.DaoArtists;
-import dao.IDaoArtists;
+import dao.DaoMysql;
+import dao.IDao;
 import entities.Artists;
 
-public class Tests_DAO_Artists {
+public class Tests_DAO_Artists 
+{
 	
-	private IDaoArtists daoArtist;
+	private IDao dao;
+	private Artists artistA;
 
 	@Before
 	public void setUp() throws Exception 
 	{
-		daoArtist = new DaoArtists();
-		Artists a = new Artists("NF", "Capitol Records", "Description1");
-		Artists b = new Artists("Jakob Ahlbom", "Epidemic Sound", "Description2");
-		Artists c = new Artists("James Blunt", "Custard/Atlantic", "Description3");
-		daoArtist.create(a);
-		daoArtist.create(b);
-		daoArtist.create(c);
+		dao = new DaoMysql();
+		
+		artistA = new Artists("NF", "Capitol Records", "Description1");
+		Artists artistB = new Artists("Jakob Ahlbom", "Epidemic Sound", "Description2");
+		Artists artistC = new Artists("James Blunt", "Custard/Atlantic", "Description3");
+		
+		dao.getDaoArtists().create(artistA);
+		dao.getDaoArtists().create(artistB);
+		dao.getDaoArtists().create(artistC);
 	}
 
 	@After
 	public void tearDown() throws Exception 
 	{
-		daoArtist.delete("NF");
-		daoArtist.delete("Jakob Ahlbom");
-		daoArtist.delete("James Blunt");
+		dao.getDaoArtists().delete("NF");
+		dao.getDaoArtists().delete("Jakob Ahlbom");
+		dao.getDaoArtists().delete("James Blunt");
 	}
 
 	@Test
 	public void testGetAll() 
 	{
-		List<Artists> artists = daoArtist.getAll();
+		List<Artists> artists = dao.getDaoArtists().getAll();
 		
 		assertEquals(3, artists.size());
 	}
@@ -48,7 +52,7 @@ public class Tests_DAO_Artists {
 	@Test
 	public void testGetByNameExact()
 	{
-		List<Artists> artists = daoArtist.getByName("NF");
+		List<Artists> artists = dao.getDaoArtists().getByName("NF");
 		
 		assertEquals(1, artists.size());
 		assertEquals("NF", artists.get(0).getName());
@@ -58,7 +62,7 @@ public class Tests_DAO_Artists {
 	public void testGetByNameSearch()
 	{
 		List<String> expectedNames = Arrays.asList("Jakob Ahlbom", "James Blunt");
-		List<Artists> artists = daoArtist.getByName("Ja");
+		List<Artists> artists = dao.getDaoArtists().getByName("Ja");
 		
 		assertEquals(2, artists.size());
 		
@@ -71,7 +75,7 @@ public class Tests_DAO_Artists {
 	@Test
 	public void testGetByLabel()
 	{
-		List<Artists> artists = daoArtist.getByLabel("Epidemic Sound");
+		List<Artists> artists = dao.getDaoArtists().getByLabel("Epidemic Sound");
 		
 		assertEquals(1, artists.size());
 		assertEquals("Epidemic Sound", artists.get(0).getLabel());
@@ -81,41 +85,26 @@ public class Tests_DAO_Artists {
 	public void testCreate()
 	{
 		Artists artist = new Artists("Paulo Londra", "WEA Latina", "Description4");
-		daoArtist.create(artist);
+		dao.getDaoArtists().create(artist);
 		
-		List<Artists> artists = daoArtist.getAll();
+		List<Artists> artists = dao.getDaoArtists().getAll();
 		assertEquals(4, artists.size());
 		
-		daoArtist.delete(artist.getName());
+		dao.getDaoArtists().delete(artist.getName());
 	}
 	
 	@Test
-	public void testUpdateLabel()
+	public void testUpdate()
 	{
 		List<String> expectedLabels = Arrays.asList("TEST", "Epidemic Sound", "Custard/Atlantic");
+		artistA.setLabel("TEST");
 		
-		daoArtist.updateLabel("NF", "TEST");
-		List<Artists> artists = daoArtist.getAll();
+		dao.getDaoArtists().update(artistA);
+		List<Artists> artists = dao.getDaoArtists().getAll();
 		
 		for(Artists a : artists)
 		{
 			assertTrue(expectedLabels.contains(a.getLabel()));
-		}
-		
-	}
-
-	
-	@Test
-	public void testUpdateDescription()
-	{
-		List<String> expectedDescription = Arrays.asList("TEST", "Description1", "Description2");
-		
-		daoArtist.updateDescription("James Blunt", "TEST");
-		List<Artists> artists = daoArtist.getAll();
-		
-		for(Artists a : artists)
-		{
-			assertTrue(expectedDescription.contains(a.getDescription()));
 		}
 		
 	}
@@ -124,11 +113,15 @@ public class Tests_DAO_Artists {
 	public void testDelete()
 	{
 		Artists artist = new Artists("Paulo Londra", "WEA Latina", "Description4");
-		daoArtist.create(artist); // already test
+		dao.getDaoArtists().create(artist); // already test
 		
-		daoArtist.delete(artist.getName());
-		
-		List<Artists> artists = daoArtist.getAll();
+		boolean r = dao.getDaoArtists().delete(artist.getName());
+
+		List<Artists> artists = dao.getDaoArtists().getAll();
 		assertEquals(3, artists.size());
+		assertEquals(true, r);
+		
+		boolean r2 = dao.getDaoArtists().delete("Paulo Londra");
+		assertEquals(false, r2);
 	}
 }
