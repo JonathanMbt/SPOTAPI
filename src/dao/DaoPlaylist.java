@@ -1,4 +1,4 @@
-package Dao;
+package dao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,10 +9,10 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
-import Entities.Artists;
-import Entities.Musics;
-import Entities.Playlist;
-import Entities.Users;
+import entities.Artists;
+import entities.Musics;
+import entities.Playlist;
+import entities.Users;
 
 public class DaoPlaylist implements IDaoPlaylist {
 

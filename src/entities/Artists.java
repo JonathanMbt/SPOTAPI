@@ -1,7 +1,7 @@
-package Entities;
+package entities;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -9,22 +9,30 @@ import javax.persistence.Table;
 import javax.persistence.Id;
 
 @Entity @Table(name="artists")
-public class Artists implements Serializable{
+public class Artists implements Serializable
+{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	@Id
 	private String name;
 	private String label;
 	private String description;
 	
-	@OneToMany(mappedBy="artist_name", targetEntity=Musics.class)
-	List<Musics> music;
+	@OneToMany(mappedBy="artist", targetEntity=Musics.class)
+	Set<Musics> music;
 	
-	public Artists() {
-		super();
+	public Artists() {}
+	
+	public Artists(String name, String label, String description)
+	{
+		this.name = name;
+		this.label = label;
+		this.description = description;
 	}
+	
 	public String getName() {
 		return name;
 	}
@@ -49,11 +57,11 @@ public class Artists implements Serializable{
 		this.description = description;
 	}
 
-	public List<Musics> getMusic() {
+	public Set<Musics> getMusic() {
 		return music;
 	}
 
-	public void setMusic(List<Musics> music) {
+	public void setMusic(Set<Musics> music) {
 		this.music = music;
 	}
 

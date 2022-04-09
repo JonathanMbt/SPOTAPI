@@ -1,4 +1,4 @@
-package Dao;
+package dao;
 
 import java.util.List;
 
@@ -7,8 +7,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
-import Entities.Artists;
-import Entities.Users;
+import entities.Artists;
+import entities.Users;
 
 public class DaoUsers implements IDaoUsers {
 	

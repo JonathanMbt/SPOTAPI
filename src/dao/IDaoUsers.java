@@ -1,6 +1,6 @@
-package Dao;
+package dao;
 
-import Entities.Users;
+import entities.Users;
 
 public interface IDaoUsers {
 	public Users getUserByUsername(String username);

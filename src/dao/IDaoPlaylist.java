@@ -1,9 +1,9 @@
-package Dao;
+package dao;
 
 import java.util.List;
 
-import Entities.Musics;
-import Entities.Playlist;
+import entities.Musics;
+import entities.Playlist;
 
 public interface IDaoPlaylist 
 {

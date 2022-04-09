@@ -6,8 +6,10 @@ xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
 http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
 	<persistence-unit name="UniteSpoty">
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-		<class>Entities.Artists</class>
-		<class>Entities.Musics</class>
+		<class>entities.Artists</class>
+		<class>entities.Musics</class>
+		<class>entities.Playlist</class>
+		<class>entities.Users</class>
 		<properties>
 			<property name="javax.persistence.jdbc.driver"
 			value="com.mysql.jdbc.Driver" />
@@ -15,6 +17,7 @@ http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
 			value="jdbc:mysql://localhost:3306/spoty?serverTimezone=UTC" />
 			<property name="javax.persistence.jdbc.user" value="root" />
 			<property name="javax.persistence.jdbc.password" value="" />
+			<property name="eclipselink.logging.level" value="OFF"/>
 		</properties>
 	</persistence-unit>
 </persistence>

@@ -1,8 +1,12 @@
-package Entities;
+package entities;
 
+import java.io.Serializable;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -14,15 +18,23 @@ import javax.persistence.Id;
 
 
 @Entity @Table(name ="musics")
-public class Musics {
+public class Musics implements Serializable 
+{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String title;
 	private String genre;
 	
-	@ManyToOne
-	@JoinColumn(name="artist_name")
-	private Artists artist_name;
+	@ManyToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name="artist")
+	private Artists artist;
 	
 	@ManyToMany
 	@JoinTable(name="content",joinColumns=@JoinColumn(name="music_id"),inverseJoinColumns=@JoinColumn(name="playlist_id"))
@@ -32,10 +44,15 @@ public class Musics {
 	@JoinTable(name="likes",joinColumns=@JoinColumn(name="music_id"),inverseJoinColumns=@JoinColumn(name="username"))
 	Set<Users> users;
 	
-	public Musics() {
-		super();
+	public Musics() {}
+	
+	public Musics(String title, String genre, Artists artist)
+	{
+		this.title = title;
+		this.genre = genre;
+		this.artist = artist;
 	}
-
+	
 	public int getId() {
 		return id;
 	}
@@ -60,12 +77,12 @@ public class Musics {
 		this.genre = genre;
 	}
 
-	public Artists getArtist_name() {
-		return artist_name;
+	public Artists getArtist() {
+		return artist;
 	}
 
-	public void setArtist_name(Artists artist_name) {
-		this.artist_name = artist_name;
+	public void setArtist(Artists artist) {
+		this.artist = artist;
 	}
 
 	public Set<Playlist> getPlaylist() {
@@ -76,11 +93,11 @@ public class Musics {
 		this.playlist = playlist;
 	}
 	
-	public Set<Users> getUser(){
+	public Set<Users> getUsersLikes(){
 		return users;
 	}
 	
-	public void setUser(Set<Users> user){
+	public void setUsersLikes(Set<Users> user){
 		this.users=user;
 	}
 	

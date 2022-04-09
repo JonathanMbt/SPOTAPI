@@ -1,11 +1,11 @@
-package SpotPack;
+package spotPack;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import Entities.Artists;
+import entities.Artists;
 
 @Path("/artists")
 public class ArtistService {
