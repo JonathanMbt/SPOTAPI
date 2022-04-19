@@ -4,7 +4,7 @@ import entities.Users;
 
 public interface IDaoUsers 
 {
-	public Users getUserByUsername(String username);
+	public Users getByUsername(String username);
 	public boolean isPasswordCorrect(String username, String inputPassword);
 	
 	public Users create(Users user);

@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,6 +14,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+
 import javax.persistence.Id;
 
 
@@ -28,6 +31,7 @@ public class Musics implements Serializable
 	private String title;
 	private String genre;
 	
+	@JsonbTransient
 	@ManyToOne
 	@JoinColumn(name="artist")
 	private Artists artist;

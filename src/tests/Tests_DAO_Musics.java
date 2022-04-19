@@ -109,6 +109,9 @@ public class Tests_DAO_Musics
 		{
 			assertEquals("NF", m.getArtist().getName());
 		}
+		
+		List<Musics> musics2 = dao.getDaoMusics().getByArtist("Bastille");
+		assertEquals(1, musics2.size()); 
 	}
 	
 	@Test
@@ -192,6 +195,9 @@ public class Tests_DAO_Musics
 	{
 		List<Musics> rs = dao.getDaoMusics().getLikedByUser(userA);
 		assertEquals(1, rs.size());
+		
+		List<Musics> rs2 = dao.getDaoMusics().getLikedByUser("Niels");
+		assertEquals(1, rs2.size());
 	}
 
 }

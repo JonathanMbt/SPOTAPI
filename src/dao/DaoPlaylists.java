@@ -79,7 +79,6 @@ public class DaoPlaylists implements IDaoPlaylists
 		
 		return rs != null;
 	}
-	
 
 
 }

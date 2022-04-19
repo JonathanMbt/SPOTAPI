@@ -34,7 +34,7 @@ public class Tests_DAO_Users
 	@Test
 	public void testGetByUsername() 
 	{
-		Users user = dao.getDaoUsers().getUserByUsername("Jonathan");
+		Users user = dao.getDaoUsers().getByUsername("Jonathan");
 		
 		assertEquals("Jonathan", user.getUsername());
 	}
@@ -53,7 +53,7 @@ public class Tests_DAO_Users
 		Users u = new Users("Niels", "npetersen@gmail.com", "test");
 		dao.getDaoUsers().create(u);
 		
-		Users result = dao.getDaoUsers().getUserByUsername(u.getUsername());
+		Users result = dao.getDaoUsers().getByUsername(u.getUsername());
 		assertNotNull(result);
 		
 		dao.getDaoUsers().delete("Niels");
@@ -65,7 +65,7 @@ public class Tests_DAO_Users
 		userA.setMail("test@gmail.com");
 		dao.getDaoUsers().update(userA);
 		
-		Users result = dao.getDaoUsers().getUserByUsername(userA.getUsername());
+		Users result = dao.getDaoUsers().getByUsername(userA.getUsername());
 		
 		assertEquals("test@gmail.com", result.getMail());
 	}
@@ -78,7 +78,7 @@ public class Tests_DAO_Users
 		
 		boolean r = dao.getDaoUsers().delete(u.getUsername());
 		
-		Users result = dao.getDaoUsers().getUserByUsername(u.getUsername());
+		Users result = dao.getDaoUsers().getByUsername(u.getUsername());
 		assertNull(result);
 		assertEquals(true, r);
 		

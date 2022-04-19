@@ -8,6 +8,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Id;
 
+
 @Entity @Table(name="artists")
 public class Artists implements Serializable
 {

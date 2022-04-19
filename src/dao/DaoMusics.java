@@ -125,4 +125,18 @@ public class DaoMusics implements IDaoMusics
 		
 		return result;
 	}
+
+	@Override
+	public List<Musics> getByArtist(String artistName) 
+	{
+		Artists artist = em.find(Artists.class, artistName);
+		return getByArtist(artist);
+	}
+
+	@Override
+	public List<Musics> getLikedByUser(String username) 
+	{
+		Users user = em.find(Users.class, username);
+		return getLikedByUser(user);
+	}
 }

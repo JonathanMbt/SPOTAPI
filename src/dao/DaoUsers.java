@@ -18,7 +18,7 @@ public class DaoUsers implements IDaoUsers
 	}
 
 	@Override
-	public Users getUserByUsername(String username) 
+	public Users getByUsername(String username) 
 	{
 		try 
 		{
@@ -58,7 +58,7 @@ public class DaoUsers implements IDaoUsers
 	@Override
 	public boolean delete(String username) 
 	{
-		Users u = getUserByUsername(username);
+		Users u = getByUsername(username);
 		
 		if(u != null)
 		{
@@ -73,7 +73,7 @@ public class DaoUsers implements IDaoUsers
 	@Override
 	public boolean isPasswordCorrect(String username, String inputPassword) 
 	{
-		Users user = getUserByUsername(username);
+		Users user = getByUsername(username);
 		
 		if(user != null)
 		{

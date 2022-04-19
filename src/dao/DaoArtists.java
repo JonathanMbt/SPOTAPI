@@ -81,4 +81,10 @@ public class DaoArtists implements IDaoArtists
 		
 		return artist;
 	}
+
+	@Override
+	public Artists getByExactName(String name) 
+	{
+		return em.find(Artists.class, name);
+	}
 }
