@@ -39,13 +39,6 @@ public class Tests_DAO_Users
 		assertEquals("Jonathan", user.getUsername());
 	}
 	
-	@Test
-	public void testIsPasswordCorrect()
-	{
-		assertEquals(false, dao.getDaoUsers().isPasswordCorrect("Jonathan", "t"));
-		assertEquals(true, dao.getDaoUsers().isPasswordCorrect("Jonathan", "test"));
-		assertEquals(false, dao.getDaoUsers().isPasswordCorrect("Jhonatan", "test"));
-	}
 	
 	@Test
 	public void testCreate()

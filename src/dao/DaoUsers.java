@@ -1,6 +1,7 @@
 package dao;
 
 
+import javax.persistence.CacheRetrieveMode;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
@@ -68,19 +69,6 @@ public class DaoUsers implements IDaoUsers
 		}
 			
 		return u != null;
-	}
-
-	@Override
-	public boolean isPasswordCorrect(String username, String inputPassword) 
-	{
-		Users user = getByUsername(username);
-		
-		if(user != null)
-		{
-			return user.getPassword() == inputPassword;			
-		}
-		
-		return false;	
 	}
 
 }

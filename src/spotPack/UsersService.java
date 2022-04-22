@@ -1,6 +1,8 @@
 package spotPack;
 
 
+import java.io.UnsupportedEncodingException;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -24,15 +26,12 @@ public class UsersService
 	@Produces(MediaType.APPLICATION_JSON)
 	public Users findUserByName(@PathParam("username") String username)
 	{
+		try {
+			username = java.net.URLDecoder.decode(username, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 		return dao.getDaoUsers().getByUsername(username);
-	}
-	
-	@Path("{username}/validatePassword/{inputPassword}")
-	@POST
-	@Produces(MediaType.APPLICATION_JSON)
-	public boolean isPasswordCorrect(@PathParam("username") String username, @PathParam("inputPassword") String inputPassword)
-	{
-		return dao.getDaoUsers().isPasswordCorrect(username, inputPassword);
 	}
 	
 	@Path("/")
@@ -57,6 +56,11 @@ public class UsersService
 	@DELETE
 	public boolean deleteArtists(@PathParam("username") String username)
 	{
+		try {
+			username = java.net.URLDecoder.decode(username, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 		return dao.getDaoUsers().delete(username);
 	}
 }

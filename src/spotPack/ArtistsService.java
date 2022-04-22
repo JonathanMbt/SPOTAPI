@@ -1,5 +1,6 @@
 package spotPack;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -44,7 +45,25 @@ public class ArtistsService
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Artists> findArtistByName(@PathParam("id") String id)
 	{
+		try {
+			id = java.net.URLDecoder.decode(id, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 		return dao.getDaoArtists().getByName(id);
+	}
+	
+	@Path("/findByExactName/{id}")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Artists findArtistByExactName(@PathParam("id") String id)
+	{
+		try {
+			id = java.net.URLDecoder.decode(id, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return dao.getDaoArtists().getByExactName(id);
 	}
 	
 	@Path("/findByLabel/{label}")
@@ -52,6 +71,11 @@ public class ArtistsService
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Artists> findArtistByLabel(@PathParam("label") String label)
 	{
+		try {
+			label = java.net.URLDecoder.decode(label, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 		return dao.getDaoArtists().getByLabel(label);
 	}
 	
@@ -69,6 +93,11 @@ public class ArtistsService
 	@DELETE
 	public boolean deleteArtists(@PathParam("id") String id)
 	{
+		try {
+			id = java.net.URLDecoder.decode(id, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 		return dao.getDaoArtists().delete(id);
 	}
 }

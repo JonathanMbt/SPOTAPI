@@ -5,12 +5,19 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.json.bind.annotation.JsonbTransient;
+import javax.persistence.Cacheable;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+
+
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 
 @Entity @Table(name ="playlists")
 public class Playlists implements Serializable
@@ -24,8 +31,8 @@ public class Playlists implements Serializable
 	private String name;
 	private String description;
 	
-	
-	@ManyToMany(mappedBy="playlist",targetEntity=Musics.class)
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name="content",joinColumns=@JoinColumn(name="playlist_id"),inverseJoinColumns=@JoinColumn(name="music_id")) //join table détient le droit de modifier la table
 	Set<Musics> musics;
 	
 	

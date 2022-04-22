@@ -16,6 +16,8 @@ public interface IDaoMusics
 	public Musics getById(int musicId);
 	public List<Musics> getLikedByUser(Users user);
 	public List<Musics> getLikedByUser(String username);
+	public List<String> getGenres();
+	public List<Musics> getAll();
 	
 	public Musics create(Musics music);
 	public Musics update(Musics music);

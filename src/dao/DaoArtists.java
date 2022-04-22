@@ -2,6 +2,7 @@ package dao;
 
 import java.util.List;
 
+import javax.persistence.CacheRetrieveMode;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
@@ -30,7 +31,7 @@ public class DaoArtists implements IDaoArtists
 	
 	@Override
 	public List<Artists> getByName(String name)
-	{	
+	{
 		Query q = em.createQuery("From Artists WHERE name LIKE :n", Artists.class);
 		q.setParameter("n", "%"+name+"%");
 		
@@ -85,6 +86,7 @@ public class DaoArtists implements IDaoArtists
 	@Override
 	public Artists getByExactName(String name) 
 	{
+		em.clear();
 		return em.find(Artists.class, name);
 	}
 }

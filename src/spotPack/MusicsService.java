@@ -1,5 +1,6 @@
 package spotPack;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -20,6 +21,14 @@ public class MusicsService
 {
 	private static IDao dao = new DaoMysql();
 	
+	@Path("/all")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Musics> getAll()
+	{
+		return dao.getDaoMusics().getAll();
+	}
+	
 	@Path("/findByTitle/{title}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -34,6 +43,14 @@ public class MusicsService
 	public List<Musics> findMusicsByGenre(@PathParam("genre") String genre)
 	{
 		return dao.getDaoMusics().getByGenre(genre);
+	}
+	
+	@Path("/getGenres")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<String> findMusicsGenre()
+	{
+		return dao.getDaoMusics().getGenres();
 	}
 	
 	@Path("/findById/{id}")
@@ -57,6 +74,7 @@ public class MusicsService
 	@Produces(MediaType.APPLICATION_JSON)
 	public int findNumberLikes(@PathParam("id") int id)
 	{
+		
 		return dao.getDaoMusics().getNumberOfLikes(id);
 	}
 	
@@ -65,6 +83,11 @@ public class MusicsService
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Musics> findMusicsLikedByUser(@PathParam("username") String username)
 	{
+		try {
+			username = java.net.URLDecoder.decode(username, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 		return dao.getDaoMusics().getLikedByUser(username);
 	}
 	
@@ -74,6 +97,11 @@ public class MusicsService
 	@Produces(MediaType.APPLICATION_JSON)
 	public Musics addMusics(Musics m, @PathParam("artistName") String artistName)
 	{
+		try {
+			artistName = java.net.URLDecoder.decode(artistName, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 		m.setArtist(dao.getDaoArtists().getByExactName(artistName));
 		return dao.getDaoMusics().create(m);
 	}

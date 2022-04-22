@@ -3,6 +3,7 @@ package dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CacheRetrieveMode;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
@@ -42,6 +43,7 @@ public class DaoPlaylists implements IDaoPlaylists
 	@Override
 	public Playlists getById(int id) 
 	{
+		em.clear();
 		return em.find(Playlists.class, id);
 	}
 
@@ -78,6 +80,13 @@ public class DaoPlaylists implements IDaoPlaylists
 		}
 		
 		return rs != null;
+	}
+
+	@Override
+	public List<Playlists> getAll() 
+	{
+		Query q = em.createQuery("From Playlists", Playlists.class);
+		return q.getResultList();
 	}
 
 

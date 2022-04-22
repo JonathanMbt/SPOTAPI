@@ -1,5 +1,9 @@
 package dao;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
@@ -11,7 +15,7 @@ public class DaoMysql implements IDao
 	private IDaoPlaylists daoPlaylists;
 	
 	public DaoMysql()
-	{
+	{	
 		EntityManagerFactory emf;
 		emf = Persistence.createEntityManagerFactory("UniteSpoty");
 		

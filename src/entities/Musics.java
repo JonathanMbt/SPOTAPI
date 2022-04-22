@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.json.bind.annotation.JsonbTransient;
+import javax.persistence.Cacheable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -31,13 +32,12 @@ public class Musics implements Serializable
 	private String title;
 	private String genre;
 	
-	@JsonbTransient
 	@ManyToOne
 	@JoinColumn(name="artist")
 	private Artists artist;
 	
-	@ManyToMany
-	@JoinTable(name="content",joinColumns=@JoinColumn(name="music_id"),inverseJoinColumns=@JoinColumn(name="playlist_id"))
+	@ManyToMany(mappedBy="musics",targetEntity=Playlists.class)
+	@JsonbTransient
 	Set<Playlists> playlist;
 	
 	@ManyToMany

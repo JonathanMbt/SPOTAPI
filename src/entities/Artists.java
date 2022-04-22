@@ -3,6 +3,8 @@ package entities;
 import java.io.Serializable;
 import java.util.Set;
 
+import javax.json.bind.annotation.JsonbTransient;
+import javax.persistence.Cacheable;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -21,6 +23,7 @@ public class Artists implements Serializable
 	private String description;
 	
 	@OneToMany(mappedBy="artist", targetEntity=Musics.class)
+	@JsonbTransient
 	Set<Musics> music;
 	
 	public Artists() {}

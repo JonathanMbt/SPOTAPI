@@ -1,5 +1,6 @@
 package spotPack;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +23,14 @@ public class PlaylistsService
 {
 	private static IDao dao = new DaoMysql();
 	
+	@Path("/all/")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Playlists> getAll()
+	{
+		return dao.getDaoPlaylists().getAll();
+	}
+	
 	@Path("/findById/{id}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -35,6 +44,11 @@ public class PlaylistsService
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Playlists> findPlaylistByName(@PathParam("name") String name)
 	{
+		try {
+			name = java.net.URLDecoder.decode(name, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 		return dao.getDaoPlaylists().getByName(name);
 	}
 	
@@ -81,7 +95,7 @@ public class PlaylistsService
 	
 	@Path("/delete/{id}")
 	@DELETE
-	public boolean deleteArtists(@PathParam("id") int id)
+	public boolean deletePlaylist(@PathParam("id") int id)
 	{
 		return dao.getDaoPlaylists().delete(id);
 	}

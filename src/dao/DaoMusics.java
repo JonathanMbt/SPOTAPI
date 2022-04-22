@@ -3,6 +3,7 @@ package dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CacheRetrieveMode;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
@@ -118,6 +119,7 @@ public class DaoMusics implements IDaoMusics
 	@Override
 	public List<Musics> getLikedByUser(Users user) 
 	{
+		em.clear();
 		user = em.find(Users.class, user.getUsername());
 		
 		List<Musics> result = new ArrayList<Musics>();
@@ -129,6 +131,7 @@ public class DaoMusics implements IDaoMusics
 	@Override
 	public List<Musics> getByArtist(String artistName) 
 	{
+		em.clear();
 		Artists artist = em.find(Artists.class, artistName);
 		return getByArtist(artist);
 	}
@@ -136,7 +139,24 @@ public class DaoMusics implements IDaoMusics
 	@Override
 	public List<Musics> getLikedByUser(String username) 
 	{
+		em.clear();
 		Users user = em.find(Users.class, username);
 		return getLikedByUser(user);
+	}
+
+	@Override
+	public List<String> getGenres() 
+	{
+		Query q = em.createQuery("SELECT DISTINCT genre From Musics ORDER BY genre ASC", String.class);
+		
+		return q.getResultList();
+	}
+
+	@Override
+	public List<Musics> getAll() 
+	{
+		Query q = em.createQuery("From Musics", Musics.class);
+		
+		return q.getResultList();
 	}
 }

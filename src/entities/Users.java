@@ -3,9 +3,14 @@ package entities;
 import java.io.Serializable;
 import java.util.Set;
 
+import javax.json.bind.annotation.JsonbTransient;
+import javax.persistence.Cacheable;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+
+import org.apache.commons.codec.digest.DigestUtils;
+
 import javax.persistence.Id;
 
 
@@ -21,6 +26,7 @@ public class Users implements Serializable
 	private String password;
 	
 	@ManyToMany(mappedBy="users",targetEntity=Musics.class)
+	@JsonbTransient
 	Set<Musics> likedMusics;
 	
 	public Users(){}
@@ -30,6 +36,12 @@ public class Users implements Serializable
 		this.username = username;
 		this.mail = mail;
 		this.password = password;
+		encryptPassword();
+	}
+	
+	public void encryptPassword()
+	{
+		password =  DigestUtils.sha256Hex(this.password + DigestUtils.sha1Hex(username));
 	}
 	
 	public String getUsername() 
