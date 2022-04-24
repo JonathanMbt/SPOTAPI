@@ -5,8 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.json.bind.annotation.JsonbTransient;
-import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,7 +29,7 @@ public class Playlists implements Serializable
 	private String name;
 	private String description;
 	
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.MERGE)
 	@JoinTable(name="content",joinColumns=@JoinColumn(name="playlist_id"),inverseJoinColumns=@JoinColumn(name="music_id")) //join table détient le droit de modifier la table
 	Set<Musics> musics;
 	

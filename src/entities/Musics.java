@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Set;
 
 import javax.json.bind.annotation.JsonbTransient;
-import javax.persistence.Cacheable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;

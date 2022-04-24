@@ -1,8 +1,5 @@
 package dao;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
